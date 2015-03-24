@@ -127,6 +127,7 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
 }
 
 @property (nonatomic, assign, readwrite) MMDrawerSide openSide;
+@property (nonatomic, strong) UIPanGestureRecognizer *panGesture;
 
 @property (nonatomic, strong) UIView * childControllerContainerView;
 @property (nonatomic, strong) MMDrawerCenterContainerView * centerContainerView;
@@ -1270,9 +1271,9 @@ static inline CGFloat originXForDrawerOriginAndTargetOriginOffset(CGFloat origin
 
 #pragma mark - Helpers
 -(void)setupGestureRecognizers{
-    UIPanGestureRecognizer * pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureCallback:)];
-    [pan setDelegate:self];
-    [self.view addGestureRecognizer:pan];
+    self.panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureCallback:)];
+    [self.panGesture setDelegate:self];
+    [self.view addGestureRecognizer:panGesture];
     
     UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureCallback:)];
     [tap setDelegate:self];
