@@ -1273,7 +1273,7 @@ static inline CGFloat originXForDrawerOriginAndTargetOriginOffset(CGFloat origin
 -(void)setupGestureRecognizers{
     self.panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureCallback:)];
     [self.panGesture setDelegate:self];
-    [self.view addGestureRecognizer:panGesture];
+    [self.view addGestureRecognizer:self.panGesture];
     
     UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureCallback:)];
     [tap setDelegate:self];
