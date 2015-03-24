@@ -1374,6 +1374,29 @@ static inline CGFloat originXForDrawerOriginAndTargetOriginOffset(CGFloat origin
     }
 }
 
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRequireFailureOfGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    if (gestureRecognizer != self.panGesture || self.openSide != MMDrawerSideNone) {
+        return NO;
+    }
+    CGPoint velocity = [self.panGesture velocityInView:self.panGesture.view];
+    BOOL isHorizontalGesture = fabs(velocity.y) <= fabs(velocity.x);
+
+    if(isHorizontalGesture) {
+        CGPoint point = [gestureRecognizer locationInView:gestureRecognizer.view];
+        if(([self isPointContainedWithinLeftBezelRect:point] && self.leftDrawerViewController) ||
+                ([self isPointContainedWithinRightBezelRect:point] && self.rightDrawerViewController)) {
+
+            if ([otherGestureRecognizer isKindOfClass:NSClassFromString(@"UIScrollViewPanGestureRecognizer")]) {
+                otherGestureRecognizer.enabled = NO;
+                otherGestureRecognizer.enabled = YES;
+                return YES;
+            }
+        }
+    }
+    return NO;
+}
+
 #pragma mark Gesture Recogizner Delegate Helpers
 -(MMCloseDrawerGestureMode)possibleCloseGestureModesForGestureRecognizer:(UIGestureRecognizer*)gestureRecognizer withTouch:(UITouch*)touch{
     CGPoint point = [touch locationInView:self.childControllerContainerView];
